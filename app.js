@@ -43,7 +43,7 @@ function isAuthenticated(req, res, next) {
     }
 }
 app.get('/api/data', isAuthenticated, function (req, res) {
-    var data = [{ name: 'Nick', age: 21 }, { name: 'Maris', age: 22 }];
+    var data = [{ name: 'Nick', age: 21 }, { name: 'Maria', age: 22 }];
     res.status(200).send(JSON.stringify(data));
 })
 app.listen(port, function () {
