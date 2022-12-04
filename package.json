@@ -1,7 +1,7 @@
 {
-  "name": "nodejs_hello",
+  "name": "express_JWTAuth",
   "version": "1.0.0",
-  "description": "nodejs express_basic",
+  "description": "nodejs express_JWTAuth",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -9,16 +9,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uthcst/express_basic.git"
+    "url": "git+https://github.com/uthcst/express_JWTAuth.git"
   },
   "keywords": [
     "nodejs",
-    "hello"
+    "jwt authorization"
   ],
   "author": "uthcst",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/uthcst/express_basic/issues"
+    "url": "https://github.com/uthcst/express_JWTAuth/issues"
   },
-  "homepage": "https://github.com/uthcst/express_basic#readme"
+  "homepage": "https://github.com/uthcst/express_JWTAuth#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1"
+  }
 }

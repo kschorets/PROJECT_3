@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Authentication</title>
+    <style>
+        h1,
+        h2,
+        div {
+            text-align: center;
+        }
+
+        form {
+            margin: auto;
+            width: 300px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        form * {
+            padding: 3px;
+            margin: 3px;
+            ;
+        }
+
+        table {
+            margin: auto;
+            margin-top: 10px;
+            border-collapse: collapse;
+            max-width: 400px;
+            width: 80%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: lightgray;
+        }
+
+        th {
+            background-color: gray;
+            color: white;
+        }
+    </style>
+
+    <script type="module">
+        let jwtToken;
+        function login() {
+            jwtToken="";
+            let credentials = {
+                username: document.querySelector("[name='username']").value,
+                password: document.querySelector("[name='password']").value
+            }
+            fetch("/login", {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify(credentials)
+            })
+                .then((res) => res.json())
+                .then((json) => {
+                    if (json) {
+                        jwtToken = json;
+                        document.querySelector("[name='username']").value = "";
+                        document.querySelector("[name='password']").value = "";
+                        document.getElementById("data").innerText = "Logged In";
+                    }
+                })
+                .catch(e => showError(e));
+        }
+
+        function getData() {
+            fetch("/api/data", {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`
+                },
+                method: "GET"
+            })
+            .catch(e => showError(e))
+                .then((res) => res.json())
+                .then((json) => showData((json)))
+                .catch(e => showError(e));
+        }
+
+        function showError(error) {
+            document.getElementById("data").innerHTML="Error ";
+            console.log(error);
+        }
+        function showData(jsonData) {
+            document.getElementById("data").innerHTML = arrayToTable(jsonData);
+        }
+
+        function arrayToTable(anArray) {
+            //converts anArray of objects to an HTML table
+            if (!anArray?.length > 0) return "";
+            //create the table header
+            let aHeaderHTML = "<tr>"
+                + Object.keys(anArray[0])
+                    .map(aKey => `<th>${aKey}</th>`).join("")
+                + "</tr>";
+            //Create a table row for each item
+            let aRowsHTML = anArray.map(
+                anItem => "<tr>"
+                    + Object.keys(anItem).map(aKey => `<td>${anItem[aKey]}</td>`).join("")
+                    + "</tr>")
+                .join("");
+            return "<table>" + aHeaderHTML + aRowsHTML + "</table>";
+        }
+
+        document.getElementById("ButtonLogin").addEventListener("click", login);
+        document.getElementById("ButtonGetData").addEventListener("click", getData);
+    </script>
+</head>
+
+<body>
+    <h1>JWT Authentication</h1>
+    <h2>Login</h2>
+    <div id="loginText">Use <b>user1</b> for username and <b>password1</b> for password to login </div>
+    <form action="" method="POST">
+        <label for="username">Username</label>
+        <input type="text" name="username" />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="" />
+        <button type="button" id="ButtonLogin">Login</button>
+        <button type="button" id="ButtonGetData">Get Data</button>
+    </form>
+    <div id="data"></div>
+</body>
+
+</html>
