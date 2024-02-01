@@ -1,0 +1,313 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.grid {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows:
+    min-content min-content
+    auto min-content;
+  grid-template-areas:
+    "header header"
+    "nav nav"
+    "aside main"
+    "footer footer";
+}
+
+header,
+nav,
+aside,
+main,
+footer {
+  border: 1px solid black;
+  background-color: lightgrey;
+}
+
+header {
+  grid-area: header;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav {
+  grid-area: nav;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0px;
+  margin-right: 0px;
+  height: 3vh; /* Responsive height */
+}
+
+nav ul {
+  display: flex; /* Use flexbox to align the items side by side */
+
+  list-style-type: none; /* Remove bullets */
+}
+
+nav ul li {
+  display: flex;
+  justify-content: center;
+  float: left;
+  width: 17vw; /* Responsive width */
+  height: 3vh; /* Responsive height */
+  border: 2px solid black;
+  margin-right: 1vw; /* Responsive margin */
+  margin-left: 1vw; /* Responsive margin */
+  font-size: 1.6vh; /* Responsive font size */
+  font-family: "Roboto", sans-serif;
+  background-color: lightgray;
+  clear: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+nav ul li:hover {
+  background-color: #949494;
+}
+
+nav ul li:active {
+  background-color: #ddd;
+}
+
+/* ASIDE */
+aside {
+  grid-area: aside;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  border-right: 1px solid black;
+}
+
+aside .bio-contet div {
+  justify-content: center;
+}
+
+aside > div {
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+aside div ul li {
+  display: flex; /* Use flexbox to align the items */
+  justify-content: center;
+  list-style-type: none; /* Remove bullets */
+  float: left;
+  width: 17vw;
+  height: 5vh;
+  border: 2px solid black;
+  margin-bottom: 2vh; /* Add some spacing between list items */
+  margin-top: 1vh; /* Add some spacing between list items */
+  font-size: 2.3vh; /* Responsive font size */
+  background-color: lightgray;
+  clear: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+aside div ul li:hover {
+  background-color: #949494;
+}
+
+aside div ul li:active {
+  background-color: #ddd;
+}
+
+aside h1 {
+  font-size: 3vh; /* Responsive font size */
+  justify-content: center;
+  font-size: 2vh;
+}
+
+#links-content button {
+  display: block;
+  width: 17vw;
+  height: 5vh;
+  margin-bottom: 2vh; /* Add some spacing between list items */
+  margin-top: 2vh; /* Add some spacing between list items */
+  font-size: 2vh; /* Responsive font size */
+}
+#discography-content button {
+  display: block;
+  width: 17vw;
+  height: 5vh;
+  margin-bottom: 2vh; /* Add some spacing between list items */
+  margin-top: 2vh; /* Add some spacing between list items */
+  font-size: 2vh; /* Responsive font size */
+}
+
+aside div form {
+  margin: auto;
+  width: 300px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+aside div form * {
+  padding: 3px;
+  margin: 3px;
+}
+
+aside div th,
+aside div td {
+  text-align: left;
+  padding: 8px;
+}
+
+aside div tr:nth-child(even) {
+  background-color: lightgray;
+}
+
+aside div th {
+  background-color: gray;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+main {
+  grid-area: main;
+  display: flex;
+  border-right: 1px solid black;
+}
+
+main > div {
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+main p {
+  font-size: 2vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+main h2 {
+  font-size: 2vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+footer {
+  grid-area: footer;
+  padding: 1vh;
+
+  align-items: right;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.5vh;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: lightgray;
+}
+
+th {
+  background-color: gray;
+  color: white;
+}
+
+/* PHOTOS */
+.photos-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.photo-item {
+  width: 15vw;
+  height: 15vh;
+  border: 2px solid black;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-bottom: 0px; /* Add some spacing between list items */
+  margin-top: 0px; /* Add some spacing between list items */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.photo-item:hover {
+  background-color: #949494;
+}
+.photo-item.active {
+  background-color: #ddd;
+}
+
+.container .image-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  padding: 10px;
+}
+
+.container .image-container .image {
+  height: 25vh;
+  width: 30vw;
+  border: 10px solid white;
+  box-shadow: 0 5px 15px rgb(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.container .image-container .image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: 0.2s linear;
+}
+
+.container .image-container .image:hover img {
+  transform: scale(1.1);
+}
+
+.container .popup-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  display: none;
+}
+
+.container .popup-image span {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 60px;
+  font-weight: bolder;
+  color: #fff;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.container .popup-image img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  width: 750px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .container .popup-image img {
+    width: 95%;
+  }
+}

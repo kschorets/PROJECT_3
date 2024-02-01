@@ -1,139 +1,426 @@
 <!DOCTYPE html>
+<!-- saved from url=(0028)https://jnl76r-5000.csb.app/ -->
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JWT Authentication</title>
-    <style>
-        h1,
-        h2,
-        div {
-            text-align: center;
-        }
-
-        form {
-            margin: auto;
-            width: 300px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        form * {
-            padding: 3px;
-            margin: 3px;
-            ;
-        }
-
-        table {
-            margin: auto;
-            margin-top: 10px;
-            border-collapse: collapse;
-            max-width: 400px;
-            width: 80%;
-        }
-
-        th,
-        td {
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: lightgray;
-        }
-
-        th {
-            background-color: gray;
-            color: white;
-        }
-    </style>
-
-    <script type="module">
-        let jwtToken;
-        function login() {
-            jwtToken="";
-            let credentials = {
-                username: document.querySelector("[name='username']").value,
-                password: document.querySelector("[name='password']").value
-            }
-            fetch("/login", {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify(credentials)
-            })
-                .then((res) => res.json())
-                .then((json) => {
-                    if (json) {
-                        jwtToken = json;
-                        document.querySelector("[name='username']").value = "";
-                        document.querySelector("[name='password']").value = "";
-                        document.getElementById("data").innerText = "Logged In";
-                    }
-                })
-                .catch(e => showError(e));
-        }
-
-        function getData() {
-            fetch("/api/data", {
-                headers: {
-                    Authorization: `Bearer ${jwtToken}`
-                },
-                method: "GET"
-            })
-            .catch(e => showError(e))
-                .then((res) => res.json())
-                .then((json) => showData((json)))
-                .catch(e => showError(e));
-        }
-
-        function showError(error) {
-            document.getElementById("data").innerHTML="Error ";
-            console.log(error);
-        }
-        function showData(jsonData) {
-            document.getElementById("data").innerHTML = arrayToTable(jsonData);
-        }
-
-        function arrayToTable(anArray) {
-            //converts anArray of objects to an HTML table
-            if (!anArray?.length > 0) return "";
-            //create the table header
-            let aHeaderHTML = "<tr>"
-                + Object.keys(anArray[0])
-                    .map(aKey => `<th>${aKey}</th>`).join("")
-                + "</tr>";
-            //Create a table row for each item
-            let aRowsHTML = anArray.map(
-                anItem => "<tr>"
-                    + Object.keys(anItem).map(aKey => `<td>${anItem[aKey]}</td>`).join("")
-                    + "</tr>")
-                .join("");
-            return "<table>" + aHeaderHTML + aRowsHTML + "</table>";
-        }
-
-        document.getElementById("ButtonLogin").addEventListener("click", login);
-        document.getElementById("ButtonGetData").addEventListener("click", getData);
-    </script>
-</head>
-
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Website</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+    </head>
 <body>
-    <h1>JWT Authentication</h1>
-    <h2>Login</h2>
-    <div id="loginText">Use <b>user1</b> for username and <b>password1</b> for password to login </div>
-    <form action="" method="POST">
-        <label for="username">Username</label>
-        <input type="text" name="username" />
-        <label for="password">Password</label>
-        <input type="password" name="password" id="" />
-        <button type="button" id="ButtonLogin">Login</button>
-        <button type="button" id="ButtonGetData">Get Data</button>
-    </form>
-    <div id="data"></div>
-</body>
+  <div class="grid">
+    <header>
+      <img src="architects_logo.png" alt="Architects Logo" style="height: 50px; width: auto;">
+    </header>
+    <nav>
+      <ul>
+        <li><b>Biography</b></li>
+        <li><b>Photos</b></li>
+        <li><b>Discography</b></li>
+        <li><b>Links</b></li>
+        <li><b>Admin</b></li>
+      </ul>
+    </nav>
+    <aside>
 
-</html>
+        <!-- <h1>Aside</h1> -->
+
+      <div class="hidden" id="bio-content">
+        <!-- Bio content goes here -->
+        <h1><b>Biography Options</b></h1>
+
+        <ul>
+          <li>Bio</li>
+          <li>History</li>
+          <li>Artistry</li>
+          <li>Members</li>
+        </ul>
+
+      </div>
+
+
+      
+      <div class="hidden" id="photos-content">
+        <!-- <h1>Photo Albums</h1> -->
+        <h1>Photos Options</h1>
+
+        <ul>
+          <li>Group</li>
+          <li>Concerts</li>
+          <li>Albums</li>
+        </ul>
+
+      </div>
+
+      <div class="hidden" id="discography-content">
+        <!-- Discography content goes here -->
+        <h1>Discography Options</h1>
+        <button onclick="getJSONtopsongs();">Top Songs</button>
+        <button onclick="getJSONsingles();">Singles</button>
+        <button onclick="getJSONalbums();">Albums</button>
+      </div>
+
+
+      <div class="hidden" id="links-content">
+        <!-- Links content goes here -->
+        <h1>Link Options</h1>
+        <button onclick="getJSONvideo_clips();">Video Clips</button>
+        <button onclick="getJSONconcerts();">Concerts</button>
+        <button onclick="getJSONsites();">Official Sites</button>
+      </div>
+
+
+
+
+
+
+      <div class="hidden" id="management-content">
+        <!-- Management content goes here -->
+        <h1>Administration</h1>
+        <hr>
+        <h2>Login as admin.</h2>
+
+        <form action="" method="POST">
+            <label for="username"><b>Username</b></label>
+            <input type="text" name="username">
+            <label for="password"><b>Password</b></label>
+            <input type="password" name="password" id="">
+            <button type="button" id="ButtonLogin">Login</button>
+            <button type="button" id="ButtonGetData">Get Data</button>
+        </form>
+
+        <div id="data"></div>
+        <script type="module">
+          let jwtToken;
+          function login() {
+              jwtToken="";
+              let credentials = {
+                  username: document.querySelector("[name='username']").value,
+                  password: document.querySelector("[name='password']").value
+              }
+              fetch("/login", {
+                  headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                  },
+                  method: "POST",
+                  body: JSON.stringify(credentials)
+              })
+                  .then((res) => res.json())
+                  .then((json) => {
+                      if (json) {
+                          jwtToken = json;
+                          document.querySelector("[name='username']").value = "";
+                          document.querySelector("[name='password']").value = "";
+                          document.getElementById("data").innerText = "Logged In";
+                      }
+                  })
+                  .catch(e => showError(e));
+          }
+  
+          function getData() {
+              fetch("/api/data", {
+                  headers: {
+                      Authorization: `Bearer ${jwtToken}`
+                  },
+                  method: "GET"
+              })
+              .catch(e => showError(e))
+                  .then((res) => res.json())
+                  .then((json) => showData((json)))
+                  .catch(e => showError(e));
+          }
+  
+          function showError(error) {
+              document.getElementById("data").innerHTML="Error ";
+              console.log(error);
+          }
+          function showData(jsonData) {
+              document.getElementById("data").innerHTML = arrayToTable(jsonData);
+          }
+  
+          function arrayToTable(anArray) {
+              //converts anArray of objects to an HTML table
+              if (!anArray?.length > 0) return "";
+              //create the table header
+              let aHeaderHTML = "<tr>"
+                  + Object.keys(anArray[0])
+                      .map(aKey => `<th>${aKey}</th>`).join("")
+                  + "</tr>";
+              //Create a table row for each item
+              let aRowsHTML = anArray.map(
+                  anItem => "<tr>"
+                      + Object.keys(anItem).map(aKey => `<td>${anItem[aKey]}</td>`).join("")
+                      + "</tr>")
+                  .join("");
+              return "<table>" + aHeaderHTML + aRowsHTML + "</table>";
+          }
+  
+          document.getElementById("ButtonLogin").addEventListener("click", login);
+          document.getElementById("ButtonGetData").addEventListener("click", getData);
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </aside>
+    <main>
+      <!-- <h1>Main</h1> -->
+
+      <div class="hidden" id="bio-main">
+        <!-- Bio content goes here -->
+        <!-- <h1>Bio content</h1> -->
+
+        <div class="hidden" id="bio-main1">
+          <h1><b>Biography</b></h1>
+          <hr>
+          <br>
+          <p>Architects are a British metalcore band from Brighton, East Sussex, formed in 2004 by twin brothers Dan and Tom Searle. The band now consists of Dan Searle on drums, Sam Carter on vocals, Alex Dean on bass, and Adam Christianson on guitar. They have been signed to Epitaph Records since 2013.</p>
+          <br>
+          <p>Strongly influenced by bands such as The Dillinger Escape Plan, the sound of their first three albums was coarse, chaotic, and rhythmically complex. In 2011, Architects went in a more melodic post-hardcore direction with The Here and Now, alienating some of their fanbase. The following year, they returned towards their original style with Daybreaker, establishing a balance of melody and technical harshness while introducing more politicised lyrics. With the release of their sixth album Lost Forever Lost Together in 2014, the band achieved lasting popularity and critical acclaim.</p>
+          <br>
+          <p>Soon after the release of their seventh album, All Our Gods Have Abandoned Us, in 2016, guitarist and principal songwriter Tom Searle died after three years of living with skin cancer, making Dan Searle the only original band member. In September 2017, the band released the single "Doomsday", the last song he was working on before his death, and announced Middleton as their new lead guitarist. The single is featured on Holy Hell, their first album recorded without Tom Searle, which was released in November 2018. Their ninth studio album, For Those That Wish to Exist, was released on 26 February 2021, it also became their first chart-topper on the UK Albums Chart. Its follow-up and their most recent album, The Classic Symptoms of a Broken Spirit, was released in October 2022.</p>
+          <br>
+          <hr>
+
+        </div>
+
+        <div class="hidden" id="bio-main2">
+          <h1><b>History</b></h1>
+          <hr>
+          <br>
+          <h2><b>Formation and Early Years (2004-2005):</b></h2>
+          <br>
+          <p>Architects was formed in 2004 in Brighton, East Sussex, England, by twin brothers Dan and Tom Searle. The original lineup also included guitarist Tim Hillier-Brook, bassist Tim Lucas, and drummer Matt Johnson. The band quickly gained attention in the local scene for their intense live performances and a unique blend of metalcore elements.
+          </p>
+          <br>
+          <hr>
+          <h2><b>Debut Album and Lineup Changes (2006-2008):</b></h2>
+          <br>
+          <p>In 2006, Architects released their debut album, "Nightmares," which showcased their aggressive sound and technical prowess. The album received positive reviews and helped establish the band in the metalcore scene. However, the lineup saw changes in the following years, with Tim Hillier-Brook departing and being replaced by Alex Dean on bass.</p>
+          <br>
+          <hr>
+          <h2><b>Evolution of Sound (2009-2011):</b></h2>
+          <br>
+          <p>Architects continued to refine their sound with the release of "Hollow Crown" in 2009. This album marked a shift towards a more technical and progressive metalcore sound. The band's dedication to pushing musical boundaries was evident in their experimentation with different elements.</p>
+          <br>
+          <p>The release of "The Here and Now" in 2011 showcased a departure from their earlier aggressive style, incorporating more melodic and alternative influences. While the album received mixed reviews, it demonstrated the band's willingness to explore different musical directions.</p>
+          <br>
+          <hr>
+          <h2><b>Tragedy and "Daybreaker" (2012-2013):</b></h2>
+          <br>
+          <p>In 2012, Architects faced a significant setback when guitarist Tom Searle was diagnosed with skin cancer. Despite this, the band continued to work on their music. In 2012, they released "Daybreaker," which marked a return to a heavier sound and received critical acclaim. The album addressed personal and societal issues, showcasing the band's maturity in both lyrics and musical composition.</p>
+          <br>
+          <hr>
+          <h2><b>Tom Searle's Passing and "All Our Gods Have Abandoned Us" (2014-2016):</b></h2>
+          <br>
+          <p>Tragically, Tom Searle succumbed to cancer in August 2016. His passing deeply affected the band, but they decided to continue making music in his honor. Architects released "All Our Gods Have Abandoned Us" in 2016, an emotionally charged album that received widespread acclaim for its intensity and depth.</p>
+          <br>
+          <hr>
+          <h2><b>"Holy Hell" and Beyond (2017-2021):</b></h2>
+          <br>
+          <p>With Josh Middleton as the new guitarist, Architects released "Holy Hell" in 2018. The album was a cathartic response to Tom Searle's passing and explored themes of loss, grief, and resilience. "Holy Hell" garnered critical acclaim and solidified Architects' place as one of the leading bands in the metalcore genre.</p>
+          <br>
+          <p>In 2021, Architects released "For Those That Wish to Exist," further evolving their sound by incorporating orchestral and electronic elements. The album tackled environmental and societal issues, showcasing the band's commitment to addressing important themes through their music.</p>
+          <br>
+          <p>Throughout their history, Architects has toured extensively, building a dedicated fanbase worldwide. The band's ability to adapt and evolve their sound while maintaining a powerful and emotionally resonant core has contributed to their enduring success in the metalcore scene.</p>
+          <hr>
+
+        </div>
+
+        <div class="hidden" id="bio-main3">
+          <h1>Artistry</h1>
+          <hr>
+          <br>
+          <h2><b>Musical Innovation:</b></h2>
+          <br>
+          <p><b>Technical Proficiency:</b> Architects are known for their technical prowess, featuring complex guitar riffs, intricate drum patterns, and skillful bass lines. The band has consistently pushed the boundaries of traditional metalcore, incorporating progressive and mathcore elements into their music.</p>
+          <br>
+          <p><b>Dynamic Songwriting:</b> Their compositions often showcase a dynamic range, seamlessly transitioning between heavy breakdowns, melodic interludes, and atmospheric passages. This versatility in songwriting has allowed them to create music that appeals to a broad audience.</p>
+          <br>
+          <p><b>Evolution of Sound:</b> Architects have undergone a noticeable evolution in their sound throughout their career. From the aggressive metalcore of their early years to the more melodic and experimental phases, the band's willingness to explore different musical directions demonstrates their commitment to artistic growth.</p>
+          <hr>
+          <h2><b>Lyrical Depth and Social Commentary:</b></h2>
+          <br>
+          <p><b>Socio-Political Themes:</b> Architects are known for addressing socio-political issues in their lyrics. Their songs often explore topics such as environmentalism, societal decay, and the impact of technology. This thematic depth adds a layer of substance to their music, resonating with fans who appreciate thought-provoking content.</p>
+          <br>
+          <p><b>Personal Reflections:</b> The band's lyrics also delve into personal struggles, grief, and loss. Following the death of guitarist Tom Searle, their album "Holy Hell" was a poignant exploration of grief and the human experience. This emotional honesty has connected with listeners on a profound level.</p>
+          <br>
+          <hr>
+          <h2><b>Conceptual Albums:</b></h2>
+          <br>
+          <p><b>Narrative Threads:</b> Architects have released conceptual albums that explore overarching themes and narratives. "Daybreaker," for instance, delves into the theme of societal corruption, while "All Our Gods Have Abandoned Us" addresses the darker aspects of humanity.</p>
+          <br>
+          <p><b>"Holy Hell":</b> This album, released after Tom Searle's passing, serves as a cathartic exploration of grief and loss. The emotional weight of the themes is reflected not only in the lyrics but also in the music's intensity.</p>
+          <hr>
+          <h2><b>Visual Aesthetics:</b></h2>
+          <br>
+          <p><b>Album Artwork:</b> The band's album artwork often complements the thematic content of their music. The visuals are carefully crafted and contribute to the overall immersive experience of their albums.</p>
+          <br>
+          <p><b>Music Videos:</b> Architects' music videos are known for their artistic direction, capturing the essence of their songs visually. The videos often amplify the emotional impact of the music.</p>
+          <hr>
+          <h2><b>Live Performances:</b></h2>
+          <br>
+          <p><b>Energetic Stage Presence:</b> Architects are praised for their energetic and captivating live performances. The band's stage presence, coupled with their commitment to delivering powerful live renditions of their songs, has contributed to their success on the concert circuit.</p>
+          <hr>
+        </div>
+
+        <div class="hidden" id="bio-main3">
+          <h1>Members</h1>
+          <hr>
+          <br>
+          <h2><b>Current members:</b></h2>
+          <br>
+          <p><b>Dan Searle</b> – drums, percussion, programming (2004–present)</p>
+          <p><b>Sam Carter</b> – lead vocals (2007–present)</p>
+          <p><b>Alex "Ali" Dean</b> – bass (2006–2011, 2011–present); keyboards, drum pads (2016–present)</p>
+          <p><b>Adam Christianson</b> – rhythm guitar (2015–present; touring 2012, 2014–2015); backing vocals (2020–present)</p>
+          <hr>
+          <br>
+          <h2><b>Current touring musicians:</b></h2>
+          <br>
+          <p><b>Ryan Burnett</b> – rhythm guitar, keyboards, percussion, backing vocals (2022–present)</p>
+          <p><b>Martyn Evans</b> – lead guitar (2023–present)</p>
+          <hr>
+          <br>
+          <h2><b>Former members:</b></h2>
+          <br>
+          <p><b>Tim Lucas</b> – bass (2004–2006)</p>
+          <p><b>Matt Johnson</b> – lead vocals (2004–2007)</p>
+          <p><b>Tim Hillier-Brook</b> – rhythm guitar (2004–2012)</p>
+          <p><b>Tom Searle</b> – lead guitar, keyboards, programming (2004–2016; died 2016); rhythm guitar (2012–2015)</p>
+          <p><b>Josh Middleton</b> – lead guitar, backing vocals (2017–2023; touring 2016–2017); rhythm guitar (touring 2012)</p>
+          <hr>
+          <br>
+          <h2><b>Former touring musicians:</b></h2>
+          <br>
+          <p><b>Casey Lagos</b> – bass (2011)</p>
+          <p><b>Bobby Daniels</b> – bass (2011)</p>
+          <p><b>Morgan Sinclair</b> – rhythm guitar (2013–2014)</p>
+          <p><b>Sean Delander</b> – lead guitar (2016)</p>
+          <p><b>Troy Wright</b> – drums, percussion (2023)</p>
+
+        </div>
+
+      </div>
+
+      <div class="hidden" id="photos-main">
+        <!-- Bio content goes here -->
+        <!-- <h1>Photos content</h1> -->
+
+        
+        <div class="container">
+          <div class="hidden" id="photos-main1">
+            <h1>Group Pictures</h1>
+            <div class="image-container">
+              <div class="image"><img src="group1.jpg" alt=""></div>
+              <div class="image"><img src="group2.jpg" alt=""></div>
+              <div class="image"><img src="group3.jpg" alt=""></div>
+              <div class="image"><img src="group4.jpg" alt=""></div>
+              <div class="image"><img src="group5.jpg" alt=""></div>
+              <div class="image"><img src="group6.png" alt=""></div>
+            </div>
+          </div>
+
+          <div class="popup-image">
+            <span>×</span>
+            <img src="" alt="">
+          </div>
+
+          <div class="hidden" id="photos-main2">
+            <h1>Concert Pictures</h1>
+            <div class="image-container">
+              <div class="image"><img src="concert1.jpeg" alt=""></div>
+              <div class="image"><img src="concert2.jpg" alt=""></div>
+              <div class="image"><img src="concert3.jpg" alt=""></div>
+              <div class="image"><img src="concert4.jpeg" alt=""></div>
+              <div class="image"><img src="concert5.jpg" alt=""></div>
+              <div class="image"><img src="concert6.jpg" alt=""></div>
+              <div class="image"><img src="concert7.jpg" alt=""></div>
+            </div>
+          </div>
+
+          <div class="hidden" id="photos-main3">
+            <h1>Album Covers</h1>
+            <div class="image-container">
+              <div class="image"><img src="cover1.jpg" alt=""></div>
+              <div class="image"><img src="cover2.jpg" alt=""></div>
+              <div class="image"><img src="cover3.jpg" alt=""></div>
+              <div class="image"><img src="cover4.jpg" alt=""></div>
+              <div class="image"><img src="cover5.jpg" alt=""></div>
+              <div class="image"><img src="cover6.jpg" alt=""></div>
+              <div class="image"><img src="cover7.jpg" alt=""></div>
+              <div class="image"><img src="cover8.jpg" alt=""></div>
+              <div class="image"><img src="cover9.jpg" alt=""></div>
+              
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+        
+
+
+      </div>
+
+      <div class="hidden" id="discography-main">
+        <!-- Discography content goes here -->
+        <h1>Discography content</h1>
+
+        <div id="output_discography"></div>
+
+      </div>
+
+      <div class="hidden" id="links-main">
+        <!-- Links content goes here -->
+        <h1>Related Links</h1>
+        
+        <div id="output_links"></div>
+      
+      </div>
+      <div class="hidden" id="management-content">
+        <!-- Management content goes here -->
+        <h1>Management content</h1>
+      </div>
+    </main>
+    <footer>
+        <h1>Footer</h1>
+      <!-- Footer content goes here -->
+    </footer>
+  </div>
+  <script src="script1.js"></script>
+  
+
+
+</body></html>
